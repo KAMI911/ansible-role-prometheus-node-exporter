@@ -40,7 +40,7 @@
 
 - name: is already downloaded locally
   stat:
-    path: '{{ prometheus-node-exporter_filename }}'
+    path: '{{ prometheus_node_exporter_filename }}'
   delegate_to: localhost
   register: prometheus_node_exporter_is_local_download_file
   when: prometheus_node_exporter_installer_local
