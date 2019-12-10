@@ -1,0 +1,11 @@
+---
+# tasks file for ansible-role-prometheus-node-exporter
+
+- name: download Prometheus Node Exporter
+  include_tasks: download.yml
+
+- name: install Prometheus Exporter
+  include_tasks: install-prometheus-exporter.yml
+
+- name: configure Prometheus Exporter
+  include_tasks: configure-prometheus-exporter.yml

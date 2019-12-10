@@ -1,0 +1,9 @@
+---
+# handlers file for prometheus-node-exporter
+
+- name: restart Prometheus Node Exporter
+  service:
+    name: '{{ prometheus_node_exporter_process_name }}'
+    state: '{{ prometheus_node_exporter_service_status }}'
+    enabled: '{{ prometheus_node_exporter_service_enabled }}'
+  listen: 'restart prometheus node exporter services'

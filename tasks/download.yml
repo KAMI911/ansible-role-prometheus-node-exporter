@@ -1,0 +1,88 @@
+---
+# task file for Prometheus Node Exporter client
+
+- name: check if Prometheus Node Exporter is already installed
+  stat:
+    path: '{{ prometheus_node_exporter_dir }}/node_exporter'
+  register: prometheus_node_exporter_installed
+
+- block:
+    - name: create Prometheus Node Exporter group
+      group:
+        name: '{{ prometheus_node_exporter_group }}'
+        system: true
+        state: present
+
+    - name: create Prometheus user
+      user:
+        name: '{{ prometheus_node_exporter_user }}'
+        group: '{{ prometheus_node_exporter_group }}'
+        createhome: false
+        shell: '{% if prometheus_node_exporter_user_shell | length > 0  %}{{ prometheus_node_exporter_user_shell }}{% else %}{{ omit }}{% endif %}'
+        state: present
+        system: true
+  when: prometheus_node_exporter_manage_user
+
+- name: 'create application directory: {{ prometheus_node_exporter_dir }}'
+  file:
+    path: '{{ prometheus_node_exporter_dir }}'
+    owner: '{{ prometheus_node_exporter_user }}'
+    group: '{{ prometheus_node_exporter_group }}'
+    state: directory
+
+- name: create download directory
+  file:
+    path: '{{ prometheus_node_exporter_download_dir }}'
+    owner: '{{ prometheus_node_exporter_user }}'
+    group: '{{ prometheus_node_exporter_group }}'
+    mode: '{{ prometheus_node_exporter_dir_mode }}'
+    state: directory
+
+- name: is already downloaded locally
+  stat:
+    path: '{{ prometheus-node-exporter_filename }}'
+  delegate_to: localhost
+  register: prometheus_node_exporter_is_local_download_file
+  when: prometheus_node_exporter_installer_local
+
+- name: is already downloaded
+  stat:
+    path: '{{ prometheus_node_exporter_download_dir }}/{{ prometheus_node_exporter_download_filename }}'
+  register: prometheus_node_exporter_is_download_file
+
+- name: copy local Prometheus Node Exporter tar file
+  copy:
+    src: '{{ prometheus_node_exporter_download_filename }}'
+    dest: '{{ prometheus_node_exporter_download_dir }}/{{ prometheus_node_exporter_download_filename }}'
+    mode: 0644
+  when: (not prometheus_node_exporter_is_download_file.stat.exists or prometheus_node_exporter_installer_force_overwrite) and
+        not prometheus_node_exporter_installer_force_download and prometheus_node_exporter_installer_local
+
+- block:
+    - name: 'downloading Prometheus Node Exporter {{ prometheus_node_exporter_download_filename }} to local machine'
+      get_url:
+        url: '{{ prometheus_node_exporter_download_url }}'
+        validate_certs: '{{ prometheus_node_exporter_download_validate_certs }}'
+        dest: './{{ prometheus_node_exporter_download_filename }}'
+        mode: 0644
+      delegate_to: localhost
+      run_once: true
+      when: (not prometheus_node_exporter_is_local_download_file.stat.exists or prometheus_node_exporter_installer_force_overwrite) and
+            prometheus_node_exporter_installer_force_download
+
+    - name: copy downloaded Prometheus Node Exporter tar file
+      copy:
+        src: '{{ prometheus_node_exporter_download_filename }}'
+        dest: '{{ prometheus_node_exporter_download_dir }}/{{ prometheus_node_exporter_download_filename }}'
+        mode: 0644
+      when: (not prometheus_node_exporter_is_download_file.stat.exists or prometheus_node_exporter_installer_force_overwrite)
+  when: prometheus_node_exporter_installer_local
+
+- name: 'download Prometheus Node Exporter tar file {{ prometheus_node_exporter_download_filename }}'
+  get_url:
+    url: '{{ prometheus_node_exporter_download_url }}'
+    dest: '{{ prometheus_node_exporter_download_dir }}/{{ prometheus_node_exporter_download_filename }}'
+    validate_certs: '{{ prometheus_node_exporter_download_validate_certs }}'
+    mode: 0644
+  when: (not prometheus_node_exporter_is_download_file.stat.exists or prometheus_node_exporter_installer_force_overwrite) and
+        prometheus_node_exporter_installer_force_download and not prometheus_node_exporter_installer_local

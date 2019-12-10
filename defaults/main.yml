@@ -1,0 +1,40 @@
+---
+# defaults file for ansible-role-prometheus-node-exporter
+
+prometheus_node_exporter_manage_service: true
+prometheus_node_exporter_service_enabled: true
+prometheus_node_exporter_service_status: 'restarted'  # Possible values are: reloaded, restarted, started, stopped
+
+force_prometheus_node_exporter_install: false
+
+prometheus_node_exporter_installer_force_download: true
+prometheus_node_exporter_installer_force_overwrite: true
+prometheus_node_exporter_installer_keep: true
+prometheus_node_exporter_installer_local: false  # The true means try to copy from Ansible's local files folder
+
+prometheus_node_exporter_filename: 'node_exporter'
+prometheus_node_exporter_version: '0.18.1'
+prometheus_node_exporter_os: 'linux'
+prometheus_node_exporter_platform: 'amd64'
+
+prometheus_node_exporter_process_name: '{{ prometheus_node_exporter_filename }}'
+
+prometheus_node_exporter_manage_user: true
+prometheus_node_exporter_user: 'node_exporter'
+prometheus_node_exporter_user_shell: ''
+prometheus_node_exporter_group: 'node_exporter'
+
+prometheus_node_exporter_download_base_url: 'https://github.com/prometheus/node_exporter/releases/download/'
+prometheus_node_exporter_download_validate_certs: true
+
+prometheus_node_exporter_install_dir: /opt/
+prometheus_node_exporter_dir_mode: '0770'
+prometheus_node_exporter_file_mode: '0660'
+prometheus_node_exporter_create_symlink: true
+
+prometheus_node_exporter_download_dir: '{{ prometheus_node_exporter_install_dir }}/tmp'
+
+prometheus_node_exporter_dir: '{{ prometheus_node_exporter_install_dir }}/prometheus/'
+
+prometheus_node_exporter_system_user: 'root'
+prometheus_node_exporter_system_group: 'root'

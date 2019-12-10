@@ -1,0 +1,23 @@
+---
+#
+# Configure Prometheus Node Exporter
+#
+
+# - name: generate Prometheus Node Exporter init script
+#   template:
+#     src: exporter.j2
+#     dest: "/etc/init.d/{{ prometheus_node_exporter_process_name }}"
+#     owner: "{{ prometheus_node_exporter_system_user }}"
+#     group: "{{ prometheus_node_exporter_system_group }}"
+#     mode: 0750
+
+- name: generate Prometheus Node Exporter systemd script
+  template:
+    src: exporter-systemd.j2
+    dest: '/etc/systemd/system/{{ prometheus_node_exporter_process_name }}.service'
+    owner: "{{ prometheus_node_exporter_system_user }}"
+    group: "{{ prometheus_node_exporter_system_group }}"
+    mode: 0750
+  when: not (ansible_os_family == 'RedHat' and ansible_distribution_major_version|int >= '6')
+  notify:
+    - restart prometheus node exporter services

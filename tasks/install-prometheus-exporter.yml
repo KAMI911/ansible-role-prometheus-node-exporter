@@ -1,0 +1,23 @@
+---
+#
+# Install Prometheus Node Exporter
+#
+
+- name: extract Prometheus Node Exporter archive into installation directory
+  unarchive:
+    src: '{{ prometheus_node_exporter_download_dir }}/{{ prometheus_node_exporter_download_filename }}'
+    dest: "{{ prometheus_node_exporter_dir }}"
+    owner: "{{ prometheus_node_exporter_user }}"
+    group: "{{ prometheus_node_exporter_group }}"
+    copy: false
+    creates: "'{{ prometheus_node_exporter_dir }}/{{ prometheus_node_exporter_filename }}"
+  when: not prometheus_node_exporter_installed.stat.exists or prometheus_node_exporter_force_update
+  notify:
+    - restart prometheus node exporter services
+
+- name: delete Prometheus Node Exporter archive, if requested (default is yes)
+  file: path={{ item }} state=absent
+  with_items:
+    - '{{ prometheus_node_exporter_download_dir }}/{{ prometheus_node_exporter_download_filename }}'
+  ignore_errors: true
+  when: not prometheus_node_exporter_installer_keep
