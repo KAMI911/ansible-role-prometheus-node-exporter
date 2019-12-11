@@ -11,6 +11,7 @@ prometheus_node_exporter_installer_force_download: true
 prometheus_node_exporter_installer_force_overwrite: true
 prometheus_node_exporter_installer_keep: true
 prometheus_node_exporter_installer_local: false  # The true means try to copy from Ansible's local files folder
+prometheus_node_exporter_force_update: false
 
 prometheus_node_exporter_manage_firewalld: true
 prometheus_node_exporter_manage_firewalld_use_zone: true
