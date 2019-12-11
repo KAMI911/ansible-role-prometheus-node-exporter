@@ -3,5 +3,5 @@
 
 prometheus_node_exporter_download_filename: '{{ prometheus_node_exporter_filename }}-{{ prometheus_node_exporter_version }}.{{ prometheus_node_exporter_os }}-{{ prometheus_node_exporter_platform }}.tar.gz'
 prometheus_node_exporter_download_url: '{{ prometheus_node_exporter_download_base_url }}/v{{ prometheus_node_exporter_version }}/{{ prometheus_node_exporter_download_filename }}'
-prometheus_node_exporter_folder: '{{ prometheus_node_exporter_system_home }}/'
-prometheus_node_exporter_archive: '{{ prometheus_node_exporter_system_home }}/{{ prometheus_node_exporter_download_filename }}'
+prometheus_node_exporter_folder: '{{ prometheus_node_exporter_dir }}/{{ prometheus_node_exporter_folder_name }}'
+prometheus_node_exporter_archive: '{{ prometheus_node_exporter_dir }}/{{ prometheus_node_exporter_download_filename }}'
