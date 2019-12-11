@@ -9,3 +9,7 @@
 
 - name: configure Prometheus Exporter
   include_tasks: configure-prometheus-exporter.yml
+
+- name: manage firewalld
+  include_tasks: manage_firewalld.yml
+  when: prometheus_node_exporter_manage_firewalld
