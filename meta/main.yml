@@ -4,7 +4,7 @@
 galaxy_info:
   role_name: prometheus-node-exporter
   author: Kálmán Szalai - KAMI
-  description: "Ansible role for configuring Spacewalk Client"
+  description: "Ansible role for configuring Prometheus Node Exporter"
   license: MIT
   min_ansible_version: 2.4
 
@@ -24,7 +24,7 @@ galaxy_info:
   platforms:
     - name: Centos
       versions:
-        - 7
+      - 7
   #   - 7
   # - name: SomePlatform
   #   versions:
