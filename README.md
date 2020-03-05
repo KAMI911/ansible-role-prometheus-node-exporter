@@ -41,7 +41,7 @@ find a copy of this license in the [LICENSE](LICENSE) file included in the sourc
 
 ## Author Information
 
-This role was created in 2019 by Kálmán Szalai - KAMI
+This role was created in 2019-2020 by Kálmán Szalai - KAMI
 
 ## Support
 
