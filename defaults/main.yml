@@ -17,7 +17,7 @@ prometheus_node_exporter_manage_firewalld: true
 prometheus_node_exporter_manage_firewalld_use_zone: true
 
 prometheus_node_exporter_filename: 'node_exporter'
-prometheus_node_exporter_version: '0.18.1'
+prometheus_node_exporter_version: '1.4.0'
 prometheus_node_exporter_os: 'linux'
 prometheus_node_exporter_platform: 'amd64'
 
